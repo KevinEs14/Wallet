@@ -108,6 +108,50 @@ class _AhorrosPageState extends State<AhorrosPage> {
                       Text("Cantidad para ahorrar",style: TextStyle(fontSize: 20,color: color11,fontWeight: FontWeight.bold),),
                     ],
                   ),
+                  SizedBox(height: size.height*0.1,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+
+                        width: size.width*0.5,
+                        height: size.height*0.07,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)),
+                            color: color2
+                        ),
+                        child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("760.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
+                              ],
+                            )
+                        ),
+                      ),
+                      Container(
+
+                        width: size.width*0.3,
+                        height: size.height*0.07,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)),
+                            color: color3
+                        ),
+                        child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
+                              ],
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wall_et/pages/accounts_page.dart';
 import 'package:wall_et/pages/ahorros_page.dart';
 import 'package:wall_et/pages/pagos_page.dart';
 
@@ -29,30 +30,7 @@ class _MenuPageState extends State<MenuPage> {
 
           Column(
             children: [
-              // Container(
-              //   padding: EdgeInsets.only(left: size.width * 0.07,
-              //       right: size.width * 0.06,
-              //       top: size.width * 0.06),
-              //   height: size.height * 0.08,
-              //   width: size.width,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment
-              //         .spaceBetween,
-              //     children: [
-              //       Icon(Icons.menu, color: color1,
-              //         size: size.height * 0.05,),
-              //       Icon(Icons.exit_to_app, color: color1,
-              //         size: size.height * 0.06,),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: size.height * 0.1,),
               SizedBox(height: size.height * 0.15,),
-              // Container(
-              //   width: size.width * 0.65,
-              //   child: Image(image: AssetImage(
-              //       'assets/images/logoItecsa4.png'),),
-              // ),
               Text("WALL-ET",style: TextStyle(fontSize: size.height*0.07,color: color11,fontWeight: FontWeight.bold),),
               SizedBox(height: size.height * 0.15,),
               Row(
@@ -60,11 +38,8 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // BlocProvider.of<GeneralBloc>(context).add(ListProductsEvent());
-                      // Navigator.push(context, MaterialPageRoute(
-                      //     builder: (_) => BlocProvider.value(value: BlocProvider.of<GeneralBloc>(context),child: ProductsPage(),)));
-                      // Navigator.push(context, MaterialPageRoute(
-                      //     builder: (context) => ProductsPage()));
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => AccountsPage()));
                     },
                     child: Container(
                       height: size.width * 0.3,
@@ -158,8 +133,6 @@ class _MenuPageState extends State<MenuPage> {
                   GestureDetector(
                     onTap: () {
                       // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
-                      // Navigator.push(context, MaterialPageRoute(
-                      //     builder: (_) => BlocProvider.value(value: BlocProvider.of<GeneralBloc>(context),child: NewProductsPage(),)));
                     },
                     child: Container(
                       height: size.width * 0.3,
@@ -193,8 +166,6 @@ class _MenuPageState extends State<MenuPage> {
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-                      // BlocProvider.of<LoginBloc>(context).add(
-                      //     LoginSingOutEvent());
                     },
                     child: Container(
                       height: size.width * 0.23,

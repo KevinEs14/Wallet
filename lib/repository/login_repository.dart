@@ -12,8 +12,8 @@
 //   Future<void>getAccount(String account, String password)async{
 //     print("entra funcion");
 //     try {
-//       print(account);
-//       print(password);
+//       // print(account);
+//       // print(password);
 //       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
 //           email: account,
 //           password: password
