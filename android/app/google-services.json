@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "775292988159",
+    "project_id": "wall-et-c4297",
+    "storage_bucket": "wall-et-c4297.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775292988159:android:00a0ac9eabf9dd0f083aca",
+        "android_client_info": {
+          "package_name": "com.example.wall_et"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775292988159-dd1fgglfltm5pggimsj193ek0hfvdidv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRwKi0BFWqtHJ6MInTCTj1Jm7_TWqso5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775292988159-dd1fgglfltm5pggimsj193ek0hfvdidv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
