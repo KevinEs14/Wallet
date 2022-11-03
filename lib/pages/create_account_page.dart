@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wall_et/models/user.dart';
 import 'package:wall_et/pages/login_page.dart';
@@ -16,6 +17,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController _password = TextEditingController();
   TextEditingController _cellphone = TextEditingController();
   // late User _user;
+
+  Future createUser({required String name, required String lastName, required String email,})async{
+    //Reference to document
+    final docUser=FirebaseFirestore.instance.collection('usuarios').doc();
+    final json={
+      'name':name,
+      'lastName':lastName,
+      'email':email
+    };
+    //Create document and write data to Firebase
+    await docUser.set(json);
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -231,13 +244,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                                     color: color8),
                                 child: FlatButton(
                                   onPressed: () {
-                                    // _user.userId=1;
-                                    // _user.name = _firstName.text;
-                                    // _user.lastName = _lastName.text;
-                                    // _user.email = _email.text;
-                                    // _user.password = _password.text;
-                                    // _user.phone = _cellphone.text;
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
+                                    final name=_firstName.text;
+                                    final lastName=_lastName.text;
+                                    final email=_email.text;
+                                    createUser(name: name, lastName: lastName, email: email);
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
                                   },
                                   child: Text(
                                     "Crear",

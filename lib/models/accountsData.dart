@@ -1,9 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AccountsData{
-  String name;
-  int number;
+  String id;
+  final String name;
+  final DateTime fecha;
+  final double monto;
+  final String userId;
 
+  AccountsData({this.id='', required this.name,required this.fecha,required this.monto,required this.userId});
 
-  AccountsData({ required this.name, required this.number});
+  Map <String,dynamic>toJson()=>{
+    'nombre':name,
+    'fecha':fecha,
+    'monto':monto,
+    'userId': userId
+  };
 
+  static AccountsData fromJson(Map<String, dynamic> json)=>AccountsData(
+
+      name: json['nombre'],
+      fecha: (json['fecha'] as Timestamp).toDate(),
+      monto: json['monto'],
+      userId: json['userId']
+  );
 
 }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/pages/create_account_page.dart';
 import 'package:wall_et/pages/menu_page.dart';
 // import 'package:wall_et/repository/login_repository.dart';
@@ -13,15 +14,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  String? id;
 
   //Login Function
   static Future<User?>loginUsingEmailPassword({required String email, required String password, required BuildContext context})async{
+    // final prefs = await SharedPreferences.getInstance();
     FirebaseAuth auth=FirebaseAuth.instance;
     User? user;
     try{
       UserCredential userCredential= await auth.signInWithEmailAndPassword(email: email, password: password);
       user = userCredential.user;
+
+      // await prefs.setString('action', user?.uid??(''));
+      // print(prefs.getString('action'));
     }on FirebaseAuthException catch(e){
       if(e.code=="user-not-found"){
         print("No existe el usuario");
@@ -29,11 +36,21 @@ class _LoginPageState extends State<LoginPage> {
     }
     return user;
   }
+  Future<void>saveUserId(String userId)async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
+    // print(prefs.getString('userId'));
+  }
+  Future<void> seeData()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id=prefs.getString('userId');
+    // print("accede a funcion de lectura del dato");
+    // print(id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _username = TextEditingController();
-    TextEditingController _password = TextEditingController();
+
     final Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -149,7 +166,10 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     User? user = await loginUsingEmailPassword(email: _username.text, password: _password.text, context: context);
                     print(user);
+
                     if(user!= null){
+                      await saveUserId(user.uid);
+                      await seeData();
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuPage()));
                     }
 
