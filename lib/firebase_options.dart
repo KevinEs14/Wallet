@@ -17,19 +17,13 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,11 +46,30 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDN24VZj8iv4aiuzhAYH4by3_YQx5tILPY',
+    appId: '1:775292988159:web:07b403df49b02cc2083aca',
+    messagingSenderId: '775292988159',
+    projectId: 'wall-et-c4297',
+    authDomain: 'wall-et-c4297.firebaseapp.com',
+    storageBucket: 'wall-et-c4297.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDRwKi0BFWqtHJ6MInTCTj1Jm7_TWqso5g',
     appId: '1:775292988159:android:00a0ac9eabf9dd0f083aca',
     messagingSenderId: '775292988159',
     projectId: 'wall-et-c4297',
     storageBucket: 'wall-et-c4297.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDc5yYCKC1YUkDzxZ_xqNcuT8QSZ8gAWRw',
+    appId: '1:775292988159:ios:52214c890d7ad813083aca',
+    messagingSenderId: '775292988159',
+    projectId: 'wall-et-c4297',
+    storageBucket: 'wall-et-c4297.appspot.com',
+    iosClientId: '775292988159-ih6odnpml2l05u2slrjfjg2pldm9ll5l.apps.googleusercontent.com',
+    iosBundleId: 'com.example.wallEt',
   );
 }

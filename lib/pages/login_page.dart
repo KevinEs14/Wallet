@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wall_et/pages/create_account_page.dart';
 import 'package:wall_et/pages/menu_page.dart';
-import 'package:wall_et/repository/login_repository.dart';
+// import 'package:wall_et/repository/login_repository.dart';
 
 import '../Colors.dart';
 class LoginPage extends StatefulWidget {
@@ -12,11 +13,27 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  TextEditingController _username = TextEditingController();
-  TextEditingController _password = TextEditingController();
+
+
+  //Login Function
+  static Future<User?>loginUsingEmailPassword({required String email, required String password, required BuildContext context})async{
+    FirebaseAuth auth=FirebaseAuth.instance;
+    User? user;
+    try{
+      UserCredential userCredential= await auth.signInWithEmailAndPassword(email: email, password: password);
+      user = userCredential.user;
+    }on FirebaseAuthException catch(e){
+      if(e.code=="user-not-found"){
+        print("No existe el usuario");
+      }
+    }
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _username = TextEditingController();
+    TextEditingController _password = TextEditingController();
     final Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -130,19 +147,13 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(36.0), color: color8),
                 child: FlatButton(
                   onPressed: () async {
-                    print(_username.value.text);
-                    // AuthRepository _authrepository=new AuthRepository();
-                    // await _authrepository.getAccount(_username.value.text, _password.value.text);
-                    // print(_authrepository.response);
-                    // if(_authrepository.response==1){
-                    //   await _authrepository.verifyAccount();
-                    //   if(_authrepository==1){
-                    //     print("llegaste lejos");
-                    //     // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
-                    //   }
-                    // }
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
-                    // BlocProvider.of<LoginBloc>(context).add(LoginTryEvent(_username.text,_password.text));
+                    User? user = await loginUsingEmailPassword(email: _username.text, password: _password.text, context: context);
+                    print(user);
+                    if(user!= null){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuPage()));
+                    }
+
+                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
                   },
                   child: Text(
                     "Iniciar Sesión",
