@@ -2,28 +2,28 @@ import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Pagos{
-
-  String descripcion;
+class Ingresos{
+  String fuente;
   DateTime fecha;
   double monto;
   String userId;
   String tipo;
 
-  Pagos({required this.descripcion,required this.fecha,required this.monto,required this.tipo,required this.userId});
+  Ingresos({required this.fuente,required this.fecha,required this.monto,required this.userId,required this.tipo});
 
   Map <String,dynamic>toJson()=>{
+    'fuente':fuente,
     'fecha':fecha,
     'monto':monto,
-    'descripcion':descripcion,
-    'tipo': tipo,
+    'tipo':tipo,
     'userId': userId
   };
 
-  static Pagos fromJson(Map<String, dynamic> json)=>Pagos(
+  static Ingresos fromJson(Map<String, dynamic> json)=>Ingresos(
+
+      fuente: json['fuente'],
       fecha: (json['fecha'] as Timestamp).toDate(),
       monto: json['monto'],
-      descripcion: json['descripcion'],
       tipo: json['tipo'],
       userId: json['userId']
   );

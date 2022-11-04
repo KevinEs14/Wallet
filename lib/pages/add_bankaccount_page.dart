@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/models/accountsData.dart';
+import 'package:wall_et/models/ingresos.dart';
 
 import '../Colors.dart';
 
@@ -15,19 +16,25 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
   TextEditingController _monto = TextEditingController();
   TextEditingController _fecha = TextEditingController();
   TextEditingController _userId = TextEditingController();
+  String? tipoMoneda;
+
+  final List<String> moneda=["Bolivianos", "Dolares"];
+  // db.collection("cities").where("capital", isEqualTo: true).get().then(
+  // (res) => print("Successfully completed"),
+  // onError: (e) => print("Error completing: $e"),
+  // );
 
   String? id;
-  Future createBankAccount(AccountsData accountsData)async{
+  // Future createBankAccount(AccountsData accountsData)async{
+  //   //Reference to document
+  //   final docUser=FirebaseFirestore.instance.collection('ingresos').doc();
+  //   final json=accountsData.toJson();
+  //   await docUser.set(json);
+  // }
+  Future createIngresos(Ingresos ingresos)async{
     //Reference to document
-    final docUser=FirebaseFirestore.instance.collection('cuenta').doc();
-    final json=accountsData.toJson();
-    // final json={
-    //   'fecha':dateTime,
-    //   'monto':monto,
-    //   'nombre':nombre,
-    //   'userId':userId
-    // };
-    //Create document and write data to Firebase
+    final docUser=FirebaseFirestore.instance.collection('ingresos').doc();
+    final json=ingresos.toJson();
     await docUser.set(json);
   }
   Future<String?> seeData()async{
@@ -95,7 +102,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                                   size: 30,
                                 ),
                               ),
-                              hintText: "Nombre del Banco",
+                              hintText: "Fuente del ingreso",
                               hintStyle: TextStyle(
                                   fontSize: size.height * 0.025,
                                   height: 1.5),
@@ -140,6 +147,27 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding:  const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Container(
+                        height: size.height * 0.075,
+                        width: size.width * 0.4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[500]!.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Center(
+                          child: DropdownButton<String>(
+                            value: tipoMoneda,
+                            // isExpanded: true,
+                            items: moneda.map(buildMenuItem).toList(),
+                            onChanged: (value)=>setState(() {
+                              this.tipoMoneda=value;
+                            }),
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: size.height * 0.02,
                     ),
@@ -155,12 +183,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                           child: FlatButton(
                             onPressed: () async{
                               String? user= await seeData();
-                              final addAccount=AccountsData(
-                                  name: _nombre.text,
+                              final addIngreso=Ingresos(
+                                  fuente: _nombre.text,
                                   fecha: DateTime.now(),
                                   monto: double.parse(_monto.text),
+                                  tipo: tipoMoneda??"Bolivianos",
                                   userId: user??(''));
-                              createBankAccount(addAccount);
+                              createIngresos(addIngreso);
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -211,4 +240,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       ],
     );
   }
+
+  DropdownMenuItem<String> buildMenuItem(String item)=>
+      DropdownMenuItem(
+          value: item,
+          child: Text(item, style:TextStyle(
+              fontSize: 20,
+              height: 1.5))
+      );
+
 }

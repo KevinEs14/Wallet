@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/pages/accounts_page.dart';
 import 'package:wall_et/pages/ahorros_page.dart';
 import 'package:wall_et/pages/pagos_page.dart';
@@ -10,6 +11,15 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  String? id;
+  Future<void> seeData()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id=prefs.getString('userId');
+    // print("el id del usuario es ${id}");
+    // readIngresos();
+    // print("accede a funcion de lectura del dato");
+    // print(id);
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -31,15 +41,16 @@ class _MenuPageState extends State<MenuPage> {
           Column(
             children: [
               SizedBox(height: size.height * 0.15,),
-              Text("WALL-ET",style: TextStyle(fontSize: size.height*0.07,color: color11,fontWeight: FontWeight.bold),),
+              Text("Lay Away",style: TextStyle(fontSize: size.height*0.07,color: color11,fontWeight: FontWeight.bold),),
               SizedBox(height: size.height * 0.15,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      await seeData();
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => AccountsPage()));
+                          builder: (context) => AccountsPage(id)));
                     },
                     child: Container(
                       height: size.width * 0.3,
@@ -54,10 +65,10 @@ class _MenuPageState extends State<MenuPage> {
                         mainAxisAlignment: MainAxisAlignment
                             .center,
                         children: [
-                          Icon(Icons.add_shopping_cart,
+                          Icon(Icons.monetization_on,
                             color: color1,
                             size: size.height * 0.06,),
-                          Text("Ingresa a tu \nbanco",
+                          Text("Registra tus \ningresos",
                             style: TextStyle(
                                 fontSize: size.height * 0.02,
                                 color: color1),
@@ -67,8 +78,9 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PagosPage()));
+                    onTap: () async{
+                      await seeData();
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PagosPage(id)));
                       // Navigator.push(context, MaterialPageRoute(
                       //     builder: (_) => BlocProvider.value(value: BlocProvider.of<GeneralBloc>(context),child: ClientesPage(),)));
                     },
@@ -84,9 +96,9 @@ class _MenuPageState extends State<MenuPage> {
                         mainAxisAlignment: MainAxisAlignment
                             .center,
                         children: [
-                          Icon(Icons.group_add, color: color1,
+                          Icon(Icons.electrical_services_outlined, color: color1,
                             size: size.height * 0.06,),
-                          Text("Pagos",
+                          Text("Servicios \nBásicos",
                             style: TextStyle(
                                 fontSize: size.height * 0.02,
                                 color: color1),
@@ -119,7 +131,7 @@ class _MenuPageState extends State<MenuPage> {
                         mainAxisAlignment: MainAxisAlignment
                             .center,
                         children: [
-                          Icon(Icons.history, color: color1,
+                          Icon(Icons.savings, color: color1,
                             size: size.height * 0.06,),
                           Text("Ahorros",
                             style: TextStyle(
@@ -146,7 +158,7 @@ class _MenuPageState extends State<MenuPage> {
                         mainAxisAlignment: MainAxisAlignment
                             .center,
                         children: [
-                          Icon(Icons.library_add, color: color1,
+                          Icon(Icons.payment_rounded, color: color1,
                             size: size.height * 0.06,),
                           Text("Gastos \nAdicionales",
                             style: TextStyle(

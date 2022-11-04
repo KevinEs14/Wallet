@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wall_et/models/user.dart';
 import 'package:wall_et/pages/login_page.dart';
@@ -15,19 +16,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController _lastName = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
-  TextEditingController _cellphone = TextEditingController();
+  // TextEditingController _cellphone = TextEditingController();
   // late User _user;
 
-  Future createUser({required String name, required String lastName, required String email,})async{
-    //Reference to document
-    final docUser=FirebaseFirestore.instance.collection('usuarios').doc();
-    final json={
-      'name':name,
-      'lastName':lastName,
-      'email':email
-    };
-    //Create document and write data to Firebase
-    await docUser.set(json);
+  Future createUser({required String email, required String password,required String nombre,required String lastName})async{
+    try{
+      UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+      );
+      await userCredential.user!.updateDisplayName("${nombre} ${lastName}");
+      // await userCredential.user!.updatePhoneNumber("${phone}");
+    }on FirebaseAuthException catch (e){
+      if(e.code== 'weak-password'){
+        print('The password provided is too weak');
+      }else if(e.code=='email-already-in-use'){
+        print('The account already exists for that email');
+      }
+    }catch(e){print(e);}
   }
   @override
   Widget build(BuildContext context) {
@@ -197,39 +203,39 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Container(
-                              height: size.height * 0.075,
-                              width: size.width * 0.8,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[500]!.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: Center(
-                                child: TextField(
-                                  controller: _cellphone,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0,
-                                      ),
-                                      child: Icon(
-                                        Icons.phone,
-                                        size: 30,
-                                      ),
-                                    ),
-                                    hintText: "Celular",
-                                    // hintStyle: kBodyText,
-                                  ),
-                                  // obscureText: true,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.done,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          //   child: Container(
+                          //     height: size.height * 0.075,
+                          //     width: size.width * 0.8,
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.grey[500]!.withOpacity(0.8),
+                          //       borderRadius: BorderRadius.circular(16.0),
+                          //     ),
+                          //     child: Center(
+                          //       child: TextField(
+                          //         controller: _cellphone,
+                          //         decoration: InputDecoration(
+                          //           border: InputBorder.none,
+                          //           prefixIcon: Padding(
+                          //             padding: const EdgeInsets.symmetric(
+                          //               horizontal: 20.0,
+                          //             ),
+                          //             child: Icon(
+                          //               Icons.phone,
+                          //               size: 30,
+                          //             ),
+                          //           ),
+                          //           hintText: "Celular",
+                          //           // hintStyle: kBodyText,
+                          //         ),
+                          //         // obscureText: true,
+                          //         keyboardType: TextInputType.name,
+                          //         textInputAction: TextInputAction.done,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: size.height * 0.02,
                           ),
@@ -243,12 +249,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                                     borderRadius: BorderRadius.circular(16.0),
                                     color: color8),
                                 child: FlatButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     final name=_firstName.text;
                                     final lastName=_lastName.text;
                                     final email=_email.text;
-                                    createUser(name: name, lastName: lastName, email: email);
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
+                                    final password= _password.text;
+                                    // final phone=int.parse(_cellphone.text);
+                                    await createUser(email: email,password: password,nombre: name, lastName: lastName);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                                   },
                                   child: Text(
                                     "Crear",

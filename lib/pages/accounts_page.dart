@@ -1,40 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/models/accountsData.dart';
+import 'package:wall_et/models/ingresos.dart';
 import 'package:wall_et/models/pagos.dart';
 import 'package:wall_et/pages/add_bankaccount_page.dart';
 
 import '../Colors.dart';
 class AccountsPage extends StatefulWidget {
+  String? _id;
+
+  AccountsPage(this._id);
+
   @override
-  _AccountsPageState createState() => _AccountsPageState();
+  _AccountsPageState createState() => _AccountsPageState(this._id);
 }
 
 class _AccountsPageState extends State<AccountsPage> {
+  String? _id;
+
+  _AccountsPageState(this._id);
+
   late List<Pagos>_chartData;
+  // String? id;
 
   @override
   void initState() {
-    _chartData = getChartData();
+    // _chartData = getChartData();
+    // seeData();
     super.initState();
   }
+  // Future<void> seeData()async{
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   id=prefs.getString('userId');
+  //   print("el id del usuario es ${id}");
+  //   // readIngresos();
+  //   // print("accede a funcion de lectura del dato");
+  //   // print(id);
+  // }
 
-  List<Pagos> getChartData() {
-    final List<Pagos> data = [
-      Pagos('Banco de Credito', '25-10-22', 35.0),
-      Pagos('Banco Nacional de Bolivia', '25-10-22', 45.0),
-      Pagos('Banco Ganadero', '25-10-22', 25.0),
-      Pagos('Banco de Credito', '25-10-22', 15.0),
-      Pagos('Banco Bisa', '25-10-22', 350.0),
-      Pagos('Banco Central de Bolivia', '25-10-22', 35.0),
-      Pagos('Banco de Credito', '25-10-22', 45.0)
-    ];
-    return data;
+  // Stream<List<AccountsData>> readAccount()=>FirebaseFirestore.instance.collection('cuenta').snapshots()
+  //     .map((snapshot) => snapshot.docs.map((doc) => AccountsData.fromJson(doc.data())).toList());
+
+  Stream<List<Ingresos>> readIngresos() {
+    // seeData();
+    return FirebaseFirestore.instance.collection('ingresos').where(
+        'userId', isEqualTo: _id).snapshots()
+        .map((snapshot) =>
+        snapshot.docs.map((doc) => Ingresos.fromJson(doc.data())).toList());
   }
 
-  Stream<List<AccountsData>> readAccount()=>FirebaseFirestore.instance.collection('cuenta').snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) => AccountsData.fromJson(doc.data())).toList());
+  // Stream<List<Ingresos>> readIngresos()=>FirebaseFirestore.instance.collection('ingresos').snapshots()
+  //     .map((snapshot) => snapshot.docs.map((doc) => Ingresos.fromJson(doc.data())).toList());
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +64,15 @@ class _AccountsPageState extends State<AccountsPage> {
       appBar: AppBar(
         backgroundColor: color8,
         elevation: 5,
-        title: Text("Cuentas",
+        title: Text("Ingresos",
           style: TextStyle(fontSize: size.height * 0.025, color: color1),),
       ),
-      body: StreamBuilder<List<AccountsData>>(
-        stream: readAccount(),
+      body: StreamBuilder<List<Ingresos>>(
+        stream: readIngresos(),
         builder: (context, snapshot){
           if(snapshot.hasData){
-            final accounts=snapshot.data!;
-            print(accounts);
+            final ingresos=snapshot.data!;
+            // print(ingresos);
             return Container(
               height: size.height,
               child: Column(
@@ -65,46 +83,8 @@ class _AccountsPageState extends State<AccountsPage> {
                       child: Container(
                         height: size.height * 0.80,
                         child: ListView(
-                          children: accounts.map(buildAccount).toList(),
+                          children: ingresos.map(buildIngresos).toList(),
                         ),
-                        // child: ListView.builder(
-                        //     itemCount: accounts.map(buildAccount).toList().length,
-                        //     itemBuilder: (context, index) {
-                        //       return Card(
-                        //         color: color1,
-                        //         elevation: 5.0,
-                        //         shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.circular(10.0),
-                        //         ),
-                        //         child: Column(
-                        //           children: [
-                        //             Text(
-                        //               "${_chartData[index].nombre}",
-                        //               style: TextStyle(
-                        //                   fontSize: 20.0,
-                        //                   color: color2),
-                        //             ),
-                        //             Row(
-                        //               mainAxisAlignment: MainAxisAlignment.center,
-                        //               children: [
-                        //                 Text(
-                        //                   "${_chartData[index].monto}",
-                        //                   style: TextStyle(
-                        //                       fontSize: 35.0, color: color11),
-                        //                 ),
-                        //                 SizedBox(width: 10,),
-                        //                 Text(
-                        //                   "Bs",
-                        //                   style: TextStyle(
-                        //                       fontSize: 25.0, color: color11),
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       );
-                        //     }
-                        // ),
                       ),
                     ),
                   ),
@@ -129,7 +109,7 @@ class _AccountsPageState extends State<AccountsPage> {
                             Icon(Icons.add, color: color1,),
                             SizedBox(width: 5,),
                             Text(
-                              "Agregar Cuenta",
+                              "Agregar Ingreso",
                               style: TextStyle(
                                   fontSize: 15.0,
                                   color: color1),
@@ -151,7 +131,7 @@ class _AccountsPageState extends State<AccountsPage> {
       ),
     );
   }
-  Widget buildAccount(AccountsData accountsData)=>Card(
+  Widget buildIngresos(Ingresos accountsData)=>Card(
     color: color1,
     elevation: 5.0,
     shape: RoundedRectangleBorder(
@@ -160,7 +140,7 @@ class _AccountsPageState extends State<AccountsPage> {
     child: Column(
       children: [
         Text(
-          "${accountsData.name}",
+          "${accountsData.fuente}",
           style: TextStyle(
               fontSize: 20.0,
               color: color2),
@@ -174,8 +154,8 @@ class _AccountsPageState extends State<AccountsPage> {
                   fontSize: 35.0, color: color11),
             ),
             SizedBox(width: 10,),
-            Text(
-              "Bs",
+            Text((accountsData.tipo=="Bolivianos")?
+              "Bs":"\$",
               style: TextStyle(
                   fontSize: 25.0, color: color11),
             ),
@@ -186,3 +166,15 @@ class _AccountsPageState extends State<AccountsPage> {
   );
 }
 
+// List<Pagos> getChartData() {
+//   final List<Pagos> data = [
+//     Pagos('Banco de Credito', '25-10-22', 35.0),
+//     Pagos('Banco Nacional de Bolivia', '25-10-22', 45.0),
+//     Pagos('Banco Ganadero', '25-10-22', 25.0),
+//     Pagos('Banco de Credito', '25-10-22', 15.0),
+//     Pagos('Banco Bisa', '25-10-22', 350.0),
+//     Pagos('Banco Central de Bolivia', '25-10-22', 35.0),
+//     Pagos('Banco de Credito', '25-10-22', 45.0)
+//   ];
+//   return data;
+// }
