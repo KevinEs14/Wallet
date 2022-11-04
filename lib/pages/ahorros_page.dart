@@ -16,9 +16,9 @@ class AhorrosPage extends StatefulWidget {
 
 class _AhorrosPageState extends State<AhorrosPage> {
   String? _id;
-  double pagos=0.0;
-  double ahorro=0.0;
-  double gastos=0.0;
+  double sumPagos=0.0;
+  double sumIngresos=0.0;
+  double sumGastos=0.0;
   _AhorrosPageState(this._id);
 
   late List<PieData>_chartData;
@@ -28,16 +28,28 @@ class _AhorrosPageState extends State<AhorrosPage> {
     super.initState();
   }
 
-  Stream<List<Pagos>> readPagos() {
+  readPagos() async{
     // print("entra funcion");
     // seeData();
-    return FirebaseFirestore.instance.collection('pagos').where(
-        'userId', isEqualTo: _id).snapshots()
-        .map((snapshot) =>
-        snapshot.docs.map((doc) {
-           return Pagos.fromJson(doc.data());
-        }
-        ).toList());
+
+    var pagos= await FirebaseFirestore.instance.collection('pagos').where(
+        'userId', isEqualTo: _id).get();
+    var pagosEsp=await FirebaseFirestore.instance.collection('pagosEsp').where(
+        'userId', isEqualTo: _id).get();
+    var ingresos=await FirebaseFirestore.instance.collection('ingresos').where(
+        'userId', isEqualTo: _id).get();
+    for(var pago in pagos.docs){
+      sumPagos+=pago.data()['monto'];
+    }
+    for(var pagoEsp in pagosEsp.docs){
+      sumGastos+=pagoEsp.data()['monto'];
+    }
+    for(var ingreso in ingresos.docs){
+      sumIngresos+=ingreso.data()['monto'];
+    }
+    setState(() {
+
+    });
 
   }
   Stream<List<Pagos>> readEspPagos() {
@@ -67,13 +79,7 @@ class _AhorrosPageState extends State<AhorrosPage> {
         elevation: 5,
         title: Text("Tus Ahorros",style: TextStyle(fontSize: size.height*0.025,color: color1),),
       ),
-        body: StreamBuilder<List<Pagos>>(
-          stream: readPagos(),
-          builder: (context,snapshot){
-            if(snapshot.hasData){
-              final pagos=snapshot.data!;
-              print(pagos[0].monto);
-              return Column(children: [
+        body: Column(children: [
                 //Initialize the chart widget
                 SizedBox(height: 10,),
                 Center(
@@ -102,9 +108,9 @@ class _AhorrosPageState extends State<AhorrosPage> {
                           width: size.width*0.9,
                           child: DChartPie(
                             data: [
-                              {'domain': 'Ahorro', 'measure': 28},
-                              {'domain': 'Pagos', 'measure': 27},
-                              {'domain': 'Gastos', 'measure': 20},
+                              if(sumIngresos>0){'domain': 'Ahorro', 'measure': double.parse((sumIngresos-sumGastos-sumPagos).toStringAsFixed(2))},
+                              if(sumPagos>0){'domain': 'Pagos', 'measure': sumPagos},
+                              if(sumGastos>0){'domain': 'Gastos', 'measure': sumGastos},
                               // {'domain': 'Cordova', 'measure': 15},
                             ],
                             fillColor: (pieData, index){
@@ -164,7 +170,7 @@ class _AhorrosPageState extends State<AhorrosPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("760.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text((sumIngresos-sumGastos-sumPagos).toStringAsFixed(2),style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
                                   Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
                                 ],
                               )
@@ -192,7 +198,7 @@ class _AhorrosPageState extends State<AhorrosPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text(sumPagos.toStringAsFixed(2),style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
                                   Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
                                 ],
                               )
@@ -220,7 +226,7 @@ class _AhorrosPageState extends State<AhorrosPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text(sumGastos.toStringAsFixed(2),style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
                                   Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
                                 ],
                               )
@@ -230,10 +236,8 @@ class _AhorrosPageState extends State<AhorrosPage> {
                     ),
                   ),
                 ),
-              ]);
-            }else {return Center(child: CircularProgressIndicator());}
-          },
-        )
+              ]),
+
     );
   }
 }
