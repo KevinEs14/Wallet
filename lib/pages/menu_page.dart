@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/pages/accounts_page.dart';
 import 'package:wall_et/pages/ahorros_page.dart';
+import 'package:wall_et/pages/especial_pagos_page.dart';
 import 'package:wall_et/pages/pagos_page.dart';
 
 import '../Colors.dart';
@@ -114,7 +115,8 @@ class _MenuPageState extends State<MenuPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      await seeData();
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>AhorrosPage()));
                       // Navigator.push(context, MaterialPageRoute(
                       //     builder: (context) => HistoryPage()));
@@ -143,8 +145,9 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
+                    onTap: () async{
+                      await seeData();
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>EspecialPagosPage(id)));
                     },
                     child: Container(
                       height: size.width * 0.3,

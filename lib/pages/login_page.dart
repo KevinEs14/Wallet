@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Center(
                     // child: Container(
                         // width: size.width*0.8,
-                        child: Text("Wall-et",
+                        child: Text("Lay Away",
                                 style: TextStyle(color: color1, fontSize: 60,fontWeight: FontWeight.bold),
                         ),
                         // child: Image(
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                     if(user!= null){
                       await saveUserId(user.uid);
                       await seeData();
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));
                     }
 
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuPage()));

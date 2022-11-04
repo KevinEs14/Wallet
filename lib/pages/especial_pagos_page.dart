@@ -2,24 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wall_et/models/pagos.dart';
-import 'package:wall_et/pages/add_pagos_page.dart';
+import 'package:wall_et/pages/add_special_pagos_page.dart';
 
 import '../Colors.dart';
 
-class PagosPage extends StatefulWidget {
+class EspecialPagosPage extends StatefulWidget {
   String? _id;
 
 
-  PagosPage(this._id);
+  EspecialPagosPage(this._id);
 
   @override
-  _PagosPageState createState() => _PagosPageState(this._id);
+  _EspecialPagosPageState createState() => _EspecialPagosPageState(this._id);
 }
 
-class _PagosPageState extends State<PagosPage> {
+class _EspecialPagosPageState extends State<EspecialPagosPage> {
   String? _id;
 
-  _PagosPageState(this._id);
+  _EspecialPagosPageState(this._id);
 
   late List<Pagos>_chartData;
 
@@ -30,27 +30,12 @@ class _PagosPageState extends State<PagosPage> {
   }
   Stream<List<Pagos>> readPagos() {
     // seeData();
-    return FirebaseFirestore.instance.collection('pagos').where(
+    return FirebaseFirestore.instance.collection('pagosEsp').where(
         'userId', isEqualTo: _id).snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Pagos.fromJson(doc.data())).toList());
   }
 
-  // Stream<List<Pagos>> readAccount()=>FirebaseFirestore.instance.collection('cuenta').snapshots()
-  //     .map((snapshot) => snapshot.docs.map((doc) => Pagos.fromJson(doc.data())).toList());
-
-  // List<Pagos>getChartData(){
-  //   final List<Pagos> data = [
-  //     Pagos( 'Luz',  '25-10-22',35.0),
-  //     Pagos( 'Agua',  '25-10-22',45.0),
-  //     Pagos( 'Gas',  '25-10-22',25.0),
-  //     Pagos( 'Insumos',  '25-10-22',15.0),
-  //     Pagos( 'Matricula',  '25-10-22',350.0),
-  //     Pagos( 'Luz',  '25-10-22',35.0),
-  //     Pagos( 'Agua',  '25-10-22',45.0)
-  //   ];
-  //   return data;
-  // }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -93,7 +78,7 @@ class _PagosPageState extends State<PagosPage> {
                     ),
                     child: GestureDetector(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPagosPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddSpecialPagosPage()));
                           // print("delete");
                           // BlocProvider.of<NavigationBloc>(context).add(NavigationProductPageEvent(branchId, categoryId, page, size, _data));
                         },
@@ -136,14 +121,14 @@ class _PagosPageState extends State<PagosPage> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Container(
-          padding: EdgeInsets.all(10.0),
-          child: Image.asset(
-            "assets/images/saving.jpeg",
-            height: 120,
-            width: 120,
-          ),
-        ),
+        // Container(
+        //   padding: EdgeInsets.all(10.0),
+        //   child: Image.asset(
+        //     "assets/images/saving.jpeg",
+        //     height: 120,
+        //     width: 120,
+        //   ),
+        // ),
         Container(
           child: Column(
             children: [
