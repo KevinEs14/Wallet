@@ -110,9 +110,9 @@ class _AhorrosPageState extends State<AhorrosPage> {
                             fillColor: (pieData, index){
                               switch(pieData['domain']){
                                 case 'Ahorro':
-                                  return color3;
-                                case 'Pagos':
                                   return color2;
+                                case 'Pagos':
+                                  return color3;
                                 case 'Gastos':
                                   return color6;
                               }
@@ -147,52 +147,84 @@ class _AhorrosPageState extends State<AhorrosPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(width: 20,),
-                            Text("Cantidad para ahorrar",style: TextStyle(fontSize: 20,color: color11,fontWeight: FontWeight.bold),),
+                            Text("Cantidad ahorrada:",style: TextStyle(fontSize: 20,color: color11,fontWeight: FontWeight.bold),),
                           ],
                         ),
-                        SizedBox(height: size.height*0.1,),
+                        SizedBox(height: size.height*0.01,),
+                        Container(
+
+                          width: size.width*0.5,
+                          height: size.height*0.06,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(10)),
+                              color: color2
+                          ),
+                          child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("760.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
+                                ],
+                              )
+                          ),
+                        ),
+                        SizedBox(height: size.height*0.01,),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-
-                              width: size.width*0.5,
-                              height: size.height*0.07,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(10)),
-                                  color: color2
-                              ),
-                              child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("760.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
-                                      Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
-                                    ],
-                                  )
-                              ),
-                            ),
-                            Container(
-
-                              width: size.width*0.3,
-                              height: size.height*0.07,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(10)),
-                                  color: color3
-                              ),
-                              child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
-                                      Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
-                                    ],
-                                  )
-                              ),
-                            ),
+                            SizedBox(width: 20,),
+                            Text("Pago de servicios basicos:",style: TextStyle(fontSize: 20,color: color11,fontWeight: FontWeight.bold),),
                           ],
+                        ),
+                        SizedBox(height: size.height*0.01,),
+                        Container(
+
+                          width: size.width*0.3,
+                          height: size.height*0.06,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(10)),
+                              color: color3
+                          ),
+                          child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
+                                ],
+                              )
+                          ),
+                        ),
+                        SizedBox(height: size.height*0.01,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 20,),
+                            Text("Gastos personales:",style: TextStyle(fontSize: 20,color: color11,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                        SizedBox(height: size.height*0.01,),
+                        Container(
+
+                          width: size.width*0.3,
+                          height: size.height*0.06,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(10)),
+                              color: color6
+                          ),
+                          child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("240.00 ",style: TextStyle(fontSize: 20,color: color1,fontWeight: FontWeight.bold),),
+                                  Text(" Bs",style: TextStyle(fontSize: 15,color: color1,fontWeight: FontWeight.bold),)
+                                ],
+                              )
+                          ),
                         ),
                       ],
                     ),
