@@ -117,7 +117,7 @@ class _MenuPageState extends State<MenuPage> {
                   GestureDetector(
                     onTap: () async{
                       await seeData();
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AhorrosPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AhorrosPage(id)));
                       // Navigator.push(context, MaterialPageRoute(
                       //     builder: (context) => HistoryPage()));
                     },

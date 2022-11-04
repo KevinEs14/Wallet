@@ -138,8 +138,32 @@ class _PagosPageState extends State<PagosPage> {
       children: [
         Container(
           padding: EdgeInsets.all(10.0),
-          child: Image.asset(
-            "assets/images/saving.jpeg",
+          child: pagos.descripcion=="Luz"?Image.asset(
+            "assets/images/electricidad.jpeg",
+            height: 120,
+            width: 120,
+          ):pagos.descripcion=="Agua"?Image.asset(
+            "assets/images/agua.jpeg",
+            height: 120,
+            width: 120,
+          ):pagos.descripcion=="Gas"?Image.asset(
+            "assets/images/gas.jpeg",
+            height: 120,
+            width: 120,
+          ):pagos.descripcion=="Telefonia Movil"?Image.asset(
+            "assets/images/telefono.jpeg",
+            height: 120,
+            width: 120,
+          ):pagos.descripcion=="Internet"?Image.asset(
+            "assets/images/internet.jpeg",
+            height: 120,
+            width: 120,
+          ):pagos.descripcion=="Seguros"?Image.asset(
+            "assets/images/seguros.jpeg",
+            height: 120,
+            width: 120,
+          ):Image.asset(
+            "assets/images/universidad.jpeg",
             height: 120,
             width: 120,
           ),
@@ -150,7 +174,7 @@ class _PagosPageState extends State<PagosPage> {
               Text(
                 "${pagos.descripcion}",
                 style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 27.0,
                     color: color2),
               ),
               Row(
