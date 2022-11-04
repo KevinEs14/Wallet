@@ -79,7 +79,11 @@ class _AhorrosPageState extends State<AhorrosPage> {
         elevation: 5,
         title: Text("Tus Ahorros",style: TextStyle(fontSize: size.height*0.025,color: color1),),
       ),
-        body: Column(children: [
+        body: sumPagos<=0&&sumGastos<=0&&sumIngresos<=0?
+        Center(
+          child: CircularProgressIndicator()
+        ):
+        Column(children: [
                 //Initialize the chart widget
                 SizedBox(height: 10,),
                 Center(
